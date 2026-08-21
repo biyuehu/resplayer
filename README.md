@@ -1,4 +1,11 @@
+<!-- markdownlint-disable MD033 MD060 -->
 # ResPlayer
+
+<div align="center">
+  <img src="logo.png" alt="ResPlayer logo" width="200">
+</div>
+
+[![Build](https://github.com/biyuehu/resplayer/actions/workflows/build.yml/badge.svg)](https://github.com/biyuehu/resplayer/actions/workflows/build.yml) [![License: GPL-3.0-only](https://img.shields.io/badge/License-GPL--3.0--only-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![ResScript](https://img.shields.io/badge/ResScript-white?logo=rescript)
 
 A minimal, declarative music player written in [ReScript](https://rescript-lang.org/) — with lyrics scrolling, playlist support, playback-error recovery, and simple theming. Inspired by [APlayer](https://github.com/DIYgod/APlayer)'s configuration style, but rebuilt from scratch as a small, dependency-light state machine plus an HSX-rendered view layer.
 
