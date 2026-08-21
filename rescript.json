@@ -1,0 +1,27 @@
+{
+  "name": "resplayer",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": [
+    {
+      "module": "esmodule",
+      "in-source": true
+    }
+  ],
+  "suffix": ".res.mjs",
+  "jsx": {
+    "module": "HSX"
+  },
+  "gentypeconfig": {
+    "language": "typescript",
+    "module": "esmodule",
+    "generatedFileExtension": ".res.mts",
+    "shims": {}
+  },
+  "dependencies": [],
+  "compiler-flags": []
+}

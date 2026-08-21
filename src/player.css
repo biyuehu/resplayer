@@ -1,0 +1,257 @@
+@charset "UTF-8";
+
+.rp-player {
+  --rp-primary: #F7DCFF;
+  --rp-accent: #d87cb6;
+  --rp-text: #333;
+  --rp-text-dim: #999;
+  --rp-border: #eee;
+  --rp-bg: #fff;
+  --rp-bg-soft: #f7f7f9;
+
+  display: block;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--rp-text);
+  background: var(--rp-bg);
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.06);
+  max-width: 420px;
+}
+.rp-player * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header */
+.rp-header {
+  height: 4em;
+  cursor: default;
+  overflow: hidden;
+  line-height: 1em;
+  user-select: none;
+  position: relative;
+}
+
+.rp-cover {
+  width: 4em;
+  height: 4em;
+  float: left;
+  margin-right: 1em;
+  background: var(--rp-primary);
+  background-size: cover;
+  background-position: center;
+  transition: background 0.3s;
+}
+
+.rp-time {
+  left: 0;
+  top: 0;
+  width: 4em;
+  height: 4em;
+  opacity: 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.3s;
+  background: rgba(0, 0, 0, 0.5);
+  border-top-left-radius: 8px;
+  pointer-events: none;
+}
+.rp-header:hover .rp-time {
+  opacity: 1;
+}
+
+.rp-info {
+  margin: 0.6em 6.5em 0.5em 5em;
+}
+.rp-title,
+.rp-artist {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-bottom: 0.5em;
+  text-overflow: ellipsis;
+}
+.rp-artist {
+  color: var(--rp-text-dim);
+  font-size: 0.85em;
+}
+
+.rp-controls {
+  top: 0;
+  left: 4em;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  padding: 0.5em;
+  background: #fff;
+  position: absolute;
+  transition: opacity 0.3s;
+}
+.rp-header:hover .rp-controls {
+  opacity: 1;
+}
+
+.rp-btn {
+  color: var(--rp-primary);
+  cursor: pointer;
+  display: inline-block;
+}
+.rp-btn svg {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.rp-settings {
+  top: 0.75em;
+  right: 0.5em;
+  position: absolute;
+}
+.rp-set {
+  width: 2em;
+  color: var(--rp-text-dim);
+  cursor: pointer;
+  line-height: 2em;
+  text-align: center;
+  display: inline-block;
+}
+.rp-set svg {
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+}
+
+.rp-bar {
+  left: 4em;
+  right: 0;
+  bottom: 0;
+  height: 0.4em;
+  cursor: pointer;
+  position: absolute;
+  background: #efefef;
+}
+.rp-loaded,
+.rp-played {
+  top: 0;
+  height: 0.4em;
+  max-width: 100%;
+  position: absolute;
+}
+.rp-loaded {
+  background: #e5e5e5;
+}
+.rp-played {
+  background: var(--rp-accent);
+}
+
+.rp-playlist {
+  max-height: 0;
+  overflow: auto;
+  list-style: none;
+  user-select: none;
+  transition: max-height 0.3s;
+  border-bottom: 1px solid var(--rp-border);
+}
+.rp-playlist.show {
+  max-height: 50vh;
+}
+.rp-playlist::-webkit-scrollbar {
+  width: 5px;
+}
+.rp-playlist::-webkit-scrollbar-thumb {
+  background: #eee;
+}
+.rp-playlist::-webkit-scrollbar-thumb:hover {
+  background: var(--rp-primary);
+}
+
+.rp-item {
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0.75em 1em;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: background 0.2s, padding 0.2s;
+}
+.rp-item.current {
+  padding-left: 1.5em;
+}
+.rp-item.current::before {
+  content: "";
+  top: 1em;
+  left: -0.5em;
+  width: 1em;
+  height: 1em;
+  display: block;
+  position: absolute;
+  background: var(--rp-accent);
+  transform: rotate(45deg);
+}
+.rp-item:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.02);
+}
+.rp-item:nth-child(even) {
+  background: #fff;
+}
+.rp-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.rp-item-num,
+.rp-item-artist {
+  opacity: 0.6;
+}
+.rp-item-num {
+  margin-right: 0.75em;
+}
+.rp-item-title::after {
+  content: "-";
+  margin: 0 0.25em;
+}
+
+.rp-lyrics {
+  color: #666;
+  text-align: center;
+}
+.rp-lyrics span {
+  padding: 1em;
+  display: block;
+  overflow: hidden;
+  line-height: 1em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rp-lyrics span:empty::after {
+  content: "Music...";
+}
+
+.rp-player.rp-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+}
+.rp-player.rp-fixed .rp-playlist {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  background: var(--rp-bg);
+  border-top: 1px solid var(--rp-border);
+  border-bottom: none;
+}
