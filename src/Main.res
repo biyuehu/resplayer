@@ -1,4 +1,4 @@
-let sampleTracks: array<Player.track> = [
+let sampleTracks: array<Core.track> = [
   {
     title: "白桦林",
     artist: "朴树",
@@ -85,7 +85,7 @@ let sampleTracks: array<Player.track> = [
   },
 ]
 
-let toAudioItem = (t: Player.track): RPlayer.audioItem => {
+let toAudioItem = (t: Core.track): RPlayer.audioItem => {
   name: t.title,
   artist: t.artist,
   url: t.link,
@@ -93,20 +93,21 @@ let toAudioItem = (t: Player.track): RPlayer.audioItem => {
   lrc: t.lyric,
 }
 
-switch Player.Dom.querySelector(Player.Dom.document, "#app") {
+switch Core.Dom.querySelector(Core.Dom.document, "#app") {
 | Value(container) => {
-    let _instance = RPlayer.make({
+    let instance = RPlayer.make({
       container,
       fixed: Some(true),
       autoplay: Some(true),
       order: Some(Random),
-      theme: Some("#F7DCFF"),
+      color: Some("#F7DCFF"),
+      theme: Some(AutoTheme),
       audio: sampleTracks->Array.map(toAudioItem),
       titleChange: Some(true),
       showList: Some(false),
       debug: Some(false),
     })
-    ignore(_instance)
+    ignore(instance)
   }
 | Null | Undefined => Console.error("Main: #app container not found")
 }

@@ -1,4 +1,4 @@
-open Player
+open Core
 
 let skeleton = () => {
   open HSX
@@ -33,32 +33,32 @@ let skeleton = () => {
 }
 
 type handles = {
-  root: Player.Dom.element,
-  cover: Player.Dom.element,
-  time: Player.Dom.element,
-  title: Player.Dom.element,
-  artist: Player.Dom.element,
-  btnPrev: Player.Dom.element,
-  btnToggle: Player.Dom.element,
-  btnNext: Player.Dom.element,
-  setVolume: Player.Dom.element,
-  setMode: Player.Dom.element,
-  setList: Player.Dom.element,
-  bar: Player.Dom.element,
-  loaded: Player.Dom.element,
-  played: Player.Dom.element,
-  playlist: Player.Dom.element,
-  lyric: Player.Dom.element,
+  root: Core.Dom.element,
+  cover: Core.Dom.element,
+  time: Core.Dom.element,
+  title: Core.Dom.element,
+  artist: Core.Dom.element,
+  btnPrev: Core.Dom.element,
+  btnToggle: Core.Dom.element,
+  btnNext: Core.Dom.element,
+  setVolume: Core.Dom.element,
+  setMode: Core.Dom.element,
+  setList: Core.Dom.element,
+  bar: Core.Dom.element,
+  loaded: Core.Dom.element,
+  played: Core.Dom.element,
+  playlist: Core.Dom.element,
+  lyric: Core.Dom.element,
 }
 
-let qs = (root: Player.Dom.element, sel: string): Player.Dom.element =>
-  switch Player.Dom.elQuerySelector(root, sel) {
+let qs = (root: Core.Dom.element, sel: string): Core.Dom.element =>
+  switch Core.Dom.elQuerySelector(root, sel) {
   | Value(el) => el
   | Null | Undefined => JsError.throwWithMessage(`View.qs: element not found for "${sel}"`)
   }
 
-let mount = (container: Player.Dom.element): handles => {
-  Player.Dom.setInnerHTML(container, skeleton()->HSX.Elements.elementToString)
+let mount = (container: Core.Dom.element): handles => {
+  Core.Dom.setInnerHTML(container, skeleton()->HSX.Elements.elementToString)
   let root = qs(container, ".rp-player")
 
   {
@@ -81,7 +81,7 @@ let mount = (container: Player.Dom.element): handles => {
   }
 }
 
-let renderPlaylistItem = (track: Player.track, index: int): string => {
+let renderPlaylistItem = (track: Core.track, index: int): string => {
   open HSX
   <div class="rp-item">
     <span class="rp-item-num"> {string((index + 1)->Int.toString)} </span>
@@ -90,51 +90,51 @@ let renderPlaylistItem = (track: Player.track, index: int): string => {
   </div>->HSX.Elements.elementToString
 }
 
-let buildPlaylist = (player: Player.player, h: handles): unit => {
+let buildPlaylist = (player: Core.player, h: handles): unit => {
   let html =
     player.state.playlist
     ->Array.mapWithIndex((track, index) => renderPlaylistItem(track, index))
     ->Array.join("")
 
-  Player.Dom.setInnerHTML(h.playlist, html)
-  player.listItems = Player.Dom.querySelectorAll(Player.Dom.document, ".rp-item")
+  Core.Dom.setInnerHTML(h.playlist, html)
+  player.listItems = Core.Dom.querySelectorAll(Core.Dom.document, ".rp-item")
 
   player.listItems->Array.forEachWithIndex((item, index) => {
-    Player.Dom.addEventListener(item, "click", (_: Player.Dom.element) => {
-      if player.state.currentIndex == index && Player.Dom.getSrc(player.audio) != "" {
-        Player.toggle(player)
+    Core.Dom.addEventListener(item, "click", (_: Core.Dom.element) => {
+      if player.state.currentIndex == index && Core.Dom.getSrc(player.audio) != "" {
+        Core.toggle(player)
       } else {
-        Player.jump(player, index)
+        Core.jump(player, index)
       }
     })
   })
 }
 
-let renderTrackInfo = (player: Player.player, h: handles): unit => {
-  switch Player.getCurrentTrack(player) {
+let renderTrackInfo = (player: Core.player, h: handles): unit => {
+  switch Core.getCurrentTrack(player) {
   | Some(track) => {
-      Player.Dom.setTextContent(h.title, track.title)
-      Player.Dom.setTextContent(h.artist, track.artist)
+      Core.Dom.setTextContent(h.title, track.title)
+      Core.Dom.setTextContent(h.artist, track.artist)
       let bg = switch track.cover {
       | Some(url) => `url('${url}')`
       | None => ""
       }
-      Player.Dom.style(h.cover)["backgroundImage"] = bg
+      Core.Dom.style(h.cover)["backgroundImage"] = bg
     }
   | None => ()
   }
 }
 
 let renderToggleIcon = (h: handles, isPlaying: bool): unit =>
-  Player.Dom.setInnerHTML(h.btnToggle, isPlaying ? Icons.pause : Icons.play)
+  Core.Dom.setInnerHTML(h.btnToggle, isPlaying ? Icons.pause : Icons.play)
 
-let renderModeIcon = (h: handles, mode: Player.playMode): unit => {
+let renderModeIcon = (h: handles, mode: Core.playMode): unit => {
   let icon = switch mode {
   | Loop => Icons.loopAll
   | Single => Icons.loopSingle
   | Random => Icons.random
   }
-  Player.Dom.setInnerHTML(h.setMode, icon)
+  Core.Dom.setInnerHTML(h.setMode, icon)
 }
 
 let renderVolumeIcon = (h: handles, volume: float): unit => {
@@ -146,51 +146,51 @@ let renderVolumeIcon = (h: handles, volume: float): unit => {
       : volume >= 0.3
       ? Icons.volumeLow
       : Icons.volumeNone
-  Player.Dom.setInnerHTML(h.setVolume, icon)
+  Core.Dom.setInnerHTML(h.setVolume, icon)
 }
 
 let renderListToggle = (h: handles, show: bool): unit => {
-  let classList = Player.Dom.classList(h.playlist)
+  let classList = Core.Dom.classList(h.playlist)
   show ? classList["add"]("show") : classList["remove"]("show")
 }
 
-let renderLyricLine = (h: handles, line: Player.lyricLine): unit =>
+let renderLyricLine = (h: handles, line: Core.lyricLine): unit =>
   switch line.subText {
-  | Some(sub) => Player.Dom.setInnerHTML(h.lyric, line.text ++ "<br><br>" ++ sub)
-  | None => Player.Dom.setTextContent(h.lyric, line.text)
+  | Some(sub) => Core.Dom.setInnerHTML(h.lyric, line.text ++ "<br><br>" ++ sub)
+  | None => Core.Dom.setTextContent(h.lyric, line.text)
   }
 
-let renderLyricPlaceholder = (h: handles, player: Player.player): unit => {
+let renderLyricPlaceholder = (h: handles, player: Core.player): unit => {
   if player.state.lyrics->Array.length == 0 {
-    Player.Dom.setTextContent(h.lyric, "No lyrics available...")
+    Core.Dom.setTextContent(h.lyric, "No lyrics available...")
   } else {
-    switch Player.getCurrentTrack(player) {
-    | Some(track) => Player.Dom.setTextContent(h.lyric, `${track.title} (${track.artist})`)
+    switch Core.getCurrentTrack(player) {
+    | Some(track) => Core.Dom.setTextContent(h.lyric, `${track.title} (${track.artist})`)
     | None => ()
     }
   }
 }
 
-let renderCurrentLyricLine = (h: handles, player: Player.player): unit => {
+let renderCurrentLyricLine = (h: handles, player: Core.player): unit => {
   switch player.state.lyrics->Array.get(player.state.lyricIndex) {
   | Some(line) => renderLyricLine(h, line)
   | None => renderLyricPlaceholder(h, player)
   }
 }
 
-let updateProgress = (player: Player.player, h: handles): unit => {
-  let cur = Player.Dom.getCurrentTime(player.audio)
-  let dur = Player.Dom.getDuration(player.audio)
+let updateProgress = (player: Core.player, h: handles): unit => {
+  let cur = Core.Dom.getCurrentTime(player.audio)
+  let dur = Core.Dom.getDuration(player.audio)
   let percent = dur > 0.0 && !Float.isNaN(dur) ? cur /. dur *. 100.0 : 0.0
 
-  Player.Dom.style(h.played)["width"] = `${percent->Float.toString}%`
-  Player.Dom.setTextContent(h.time, Player.Utils.formatTime(cur))
+  Core.Dom.style(h.played)["width"] = `${percent->Float.toString}%`
+  Core.Dom.setTextContent(h.time, Core.Utils.formatTime(cur))
 }
 
-let updateLyricPlaying = (player: Player.player, h: handles): unit => {
+let updateLyricPlaying = (player: Core.player, h: handles): unit => {
   if player.state.lyrics->Array.length > 0 {
     switch player.state.lyrics->Array.get(player.state.lyricIndex) {
-    | Some(line) if Player.Dom.getCurrentTime(player.audio) >= line.time => {
+    | Some(line) if Core.Dom.getCurrentTime(player.audio) >= line.time => {
         renderLyricLine(h, line)
         player.state.lyricIndex = player.state.lyricIndex + 1
       }
@@ -199,21 +199,16 @@ let updateLyricPlaying = (player: Player.player, h: handles): unit => {
   }
 }
 
-let bindAudioEvents = (
-  player: Player.player,
-  h: handles,
-  ~titleChange: bool,
-  ~debug: bool,
-): unit => {
-  Player.Dom.addEventListener(player.audio, "play", (_: Player.Dom.element) => {
+let bindAudioEvents = (player: Core.player, h: handles, ~titleChange: bool, ~debug: bool): unit => {
+  Core.Dom.addEventListener(player.audio, "play", (_: Core.Dom.element) => {
     player.state.isPlaying = true
     renderToggleIcon(h, true)
-    Player.updateTitle(player, ~isPlaying=true, ~titleChange)
+    Core.updateTitle(player, ~isPlaying=true, ~titleChange)
 
     switch player.updateInterval {
     | Some(_) => ()
     | None => {
-        let id = Player.Dom.setInterval(() => {
+        let id = Core.Dom.setInterval(() => {
           updateProgress(player, h)
           updateLyricPlaying(player, h)
         }, 200)
@@ -222,81 +217,77 @@ let bindAudioEvents = (
     }
   })
 
-  Player.Dom.addEventListener(player.audio, "pause", (_: Player.Dom.element) => {
+  Core.Dom.addEventListener(player.audio, "pause", (_: Core.Dom.element) => {
     player.state.isPlaying = false
     renderToggleIcon(h, false)
-    Player.updateTitle(player, ~isPlaying=false, ~titleChange)
+    Core.updateTitle(player, ~isPlaying=false, ~titleChange)
 
     switch player.updateInterval {
     | Some(id) => {
-        Player.Dom.clearInterval(id)
+        Core.Dom.clearInterval(id)
         player.updateInterval = None
       }
     | None => ()
     }
   })
 
-  Player.Dom.addEventListener(player.audio, "progress", (_: Player.Dom.element) => {
-    let buffered = Player.Dom.getBuffered(player.audio)
+  Core.Dom.addEventListener(player.audio, "progress", (_: Core.Dom.element) => {
+    let buffered = Core.Dom.getBuffered(player.audio)
     let length = buffered["length"]
     if length > 0 {
-      let dur = Player.Dom.getDuration(player.audio)
+      let dur = Core.Dom.getDuration(player.audio)
       if !Float.isNaN(dur) && dur > 0.0 {
         let endTime = buffered["end"](length - 1)
         let percent = endTime /. dur *. 100.0
-        Player.Dom.style(h.loaded)["width"] = `${percent->Float.toString}%`
+        Core.Dom.style(h.loaded)["width"] = `${percent->Float.toString}%`
       }
     }
   })
 
-  Player.Dom.addEventListener(player.audio, "error", (_: Player.Dom.element) => {
-    Player.Dom.setTextContent(h.title, ":(")
-    Player.Dom.setTextContent(h.artist, "Occurred an error and playing next one...")
-    Player.handlePlaybackError(player)
+  Core.Dom.addEventListener(player.audio, "error", (_: Core.Dom.element) => {
+    Core.Dom.setTextContent(h.title, ":(")
+    Core.Dom.setTextContent(h.artist, "Occurred an error and playing next one...")
+    Core.handlePlaybackError(player)
   })
 
-  Player.Dom.addEventListener(player.audio, "ended", (_: Player.Dom.element) => {
+  Core.Dom.addEventListener(player.audio, "ended", (_: Core.Dom.element) => {
     switch player.state.playMode {
     | Single => {
-        Player.Dom.setCurrentTime(player.audio, 0.0)
-        Player.play(player)
+        Core.Dom.setCurrentTime(player.audio, 0.0)
+        Core.play(player)
       }
-    | _ => Player.next(player)
+    | _ => Core.next(player)
     }
   })
 
   ignore(debug)
 }
 
-let bindControlEvents = (player: Player.player, h: handles): unit => {
-  Player.Dom.addEventListener(h.btnToggle, "click", (_: Player.Dom.element) =>
-    Player.toggle(player)
-  )
-  Player.Dom.addEventListener(h.btnPrev, "click", (_: Player.Dom.element) => Player.prev(player))
-  Player.Dom.addEventListener(h.btnNext, "click", (_: Player.Dom.element) => Player.next(player))
+let bindControlEvents = (player: Core.player, h: handles): unit => {
+  Core.Dom.addEventListener(h.btnToggle, "click", (_: Core.Dom.element) => Core.toggle(player))
+  Core.Dom.addEventListener(h.btnPrev, "click", (_: Core.Dom.element) => Core.prev(player))
+  Core.Dom.addEventListener(h.btnNext, "click", (_: Core.Dom.element) => Core.next(player))
 
-  Player.Dom.addEventListener(h.setMode, "click", (_: Player.Dom.element) =>
-    Player.togglePlayMode(player)
+  Core.Dom.addEventListener(h.setMode, "click", (_: Core.Dom.element) =>
+    Core.togglePlayMode(player)
   )
-  Player.Dom.addEventListener(h.setList, "click", (_: Player.Dom.element) =>
-    Player.toggleList(player)
-  )
-  Player.Dom.addEventListener(h.setVolume, "click", (_: Player.Dom.element) =>
-    Player.toggleVolumeStep(player)
+  Core.Dom.addEventListener(h.setList, "click", (_: Core.Dom.element) => Core.toggleList(player))
+  Core.Dom.addEventListener(h.setVolume, "click", (_: Core.Dom.element) =>
+    Core.toggleVolumeStep(player)
   )
 
-  Player.Dom.addEventListener(h.bar, "click", (evt: Player.Dom.element) => {
-    let dur = Player.Dom.getDuration(player.audio)
+  Core.Dom.addEventListener(h.bar, "click", (evt: Core.Dom.element) => {
+    let dur = Core.Dom.getDuration(player.audio)
     if !Float.isNaN(dur) && dur > 0.0 {
-      let rect = Player.Dom.getBoundingClientRect(h.bar)
+      let rect = Core.Dom.getBoundingClientRect(h.bar)
       let clientX = (Obj.magic(evt): {..})["clientX"]
       let percent = (clientX -. rect["left"]) /. rect["width"]
-      Player.seek(player, percent *. dur)
+      Core.seek(player, percent *. dur)
     }
   })
 }
 
-let renderAll = (player: Player.player, h: handles): unit => {
+let renderAll = (player: Core.player, h: handles): unit => {
   renderTrackInfo(player, h)
   renderToggleIcon(h, player.state.isPlaying)
   renderModeIcon(h, player.state.playMode)
@@ -304,14 +295,14 @@ let renderAll = (player: Player.player, h: handles): unit => {
   renderListToggle(h, player.state.showList)
 }
 
-let renderOnTrackChange = (player: Player.player, h: handles): unit => {
+let renderOnTrackChange = (player: Core.player, h: handles): unit => {
   renderAll(player, h)
   renderLyricPlaceholder(h, player)
 }
 
 let attach = (
-  player: Player.player,
-  container: Player.Dom.element,
+  player: Core.player,
+  container: Core.Dom.element,
   ~titleChange: bool=true,
   ~debug: bool=false,
   (),

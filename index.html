@@ -5,16 +5,110 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rplayer</title>
-  <link href="/src/player.css" rel="stylesheet">
+  <title>ResPlayer Demo</title>
+  <link href="/src/RPlayer.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 2em;
+      padding-bottom: 8em;
+      /* leave room for the fixed player at the bottom */
+    }
+
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 0.2em;
+    }
+
+    p.subtitle {
+      color: #999;
+      margin-top: 0;
+      margin-bottom: 2em;
+    }
+
+    .panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      max-width: 640px;
+    }
+
+    button {
+      font: inherit;
+      padding: 0.5em 1em;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fafafa;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #f0f0f0;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .group {
+      margin-top: 1.5em;
+    }
+
+    .group h3 {
+      font-size: 0.9em;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5em;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
 <body>
-  <div style="padding: 2em; font-family: sans-serif; color: #333;">
-    <h2>ResPlayer JS Demo</h2>
+  <h1>ResPlayer</h1>
+  <p class="subtitle">A minimal, declarative music player written in ReScript. This page demonstrates the plain JS/TS
+    API (<code>makePlayer</code> + instance methods).</p>
+
+  <div class="group">
+    <h3>Playback</h3>
+    <div class="panel">
+      <button id="btn-play">Play</button>
+      <button id="btn-pause">Pause</button>
+      <button id="btn-toggle">Toggle Play/Pause</button>
+      <button id="btn-prev">Previous</button>
+      <button id="btn-next">Next</button>
+      <button id="btn-mode">Cycle Play Mode</button>
+    </div>
   </div>
-  <div id="app"></div>
-  <script type="module" src="/src/Main.res.mjs"></script>
+
+  <div class="group">
+    <h3>Appearance</h3>
+    <div class="panel">
+      <button id="btn-light">Light Mode</button>
+      <button id="btn-dark">Dark Mode</button>
+      <button id="btn-auto">Auto (System)</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h3>Visibility &amp; Lifecycle</h3>
+    <div class="panel">
+      <button id="btn-hide-show">Hide player</button>
+      <button id="btn-destroy">Destroy player</button>
+    </div>
+  </div>
+
+  <div id="aplayer-global"></div>
+  <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>

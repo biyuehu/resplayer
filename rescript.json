@@ -12,14 +12,14 @@
       "in-source": true
     }
   ],
-  "suffix": ".res.mjs",
+  "suffix": ".res.js",
   "jsx": {
     "module": "HSX"
   },
   "gentypeconfig": {
     "language": "typescript",
     "module": "esmodule",
-    "generatedFileExtension": ".res.mts",
+    "generatedFileExtension": ".res.ts",
     "shims": {}
   },
   "dependencies": [],

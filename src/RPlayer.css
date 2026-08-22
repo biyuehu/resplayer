@@ -244,7 +244,25 @@
   z-index: 9999;
   max-width: none;
   border-radius: 0;
+  overflow: visible; /* allow the playlist to expand upward above the bar */
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+}
+.rp-player.rp-fixed .rp-header {
+  height: 3.2em;
+}
+.rp-player.rp-fixed .rp-cover {
+  width: 3.2em;
+  height: 3.2em;
+}
+.rp-player.rp-fixed .rp-time {
+  width: 3.2em;
+  height: 3.2em;
+}
+.rp-player.rp-fixed .rp-controls {
+  left: 3.2em;
+}
+.rp-player.rp-fixed .rp-info {
+  margin: 0.4em 6.5em 0.4em 4em;
 }
 .rp-player.rp-fixed .rp-playlist {
   position: absolute;
@@ -254,4 +272,70 @@
   background: var(--rp-bg);
   border-top: 1px solid var(--rp-border);
   border-bottom: none;
+}
+/* Dark mode */
+.rp-player.rp-dark {
+  --rp-text: #eee;
+  --rp-text-dim: #999;
+  --rp-border: #333;
+  --rp-bg: #1c1c22;
+  --rp-bg-soft: #26262e;
+}
+.rp-player.rp-dark .rp-controls {
+  background: var(--rp-bg);
+}
+.rp-player.rp-dark .rp-bar {
+  background: #3a3a44;
+}
+.rp-player.rp-dark .rp-loaded {
+  background: #4a4a56;
+}
+.rp-player.rp-dark .rp-item:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+.rp-player.rp-dark .rp-item:nth-child(even) {
+  background: transparent;
+}
+.rp-player.rp-dark .rp-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.rp-player.rp-dark .rp-lyrics {
+  color: var(--rp-text-dim);
+}
+
+/* Auto: follow system preference when no explicit .rp-dark/.rp-light class is set */
+@media (prefers-color-scheme: dark) {
+  .rp-player.rp-auto {
+    --rp-text: #eee;
+    --rp-text-dim: #999;
+    --rp-border: #333;
+    --rp-bg: #1c1c22;
+    --rp-bg-soft: #26262e;
+  }
+  .rp-player.rp-auto .rp-controls {
+    background: var(--rp-bg);
+  }
+  .rp-player.rp-auto .rp-bar {
+    background: #3a3a44;
+  }
+  .rp-player.rp-auto .rp-loaded {
+    background: #4a4a56;
+  }
+  .rp-player.rp-auto .rp-item:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .rp-player.rp-auto .rp-item:nth-child(even) {
+    background: transparent;
+  }
+  .rp-player.rp-auto .rp-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .rp-player.rp-auto .rp-lyrics {
+    color: var(--rp-text-dim);
+  }
+}
+
+/* Hidden state (used by the show/hide API) */
+.rp-player.rp-hidden {
+  display: none !important;
 }
