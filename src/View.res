@@ -97,7 +97,7 @@ let buildPlaylist = (player: Core.player, h: handles): unit => {
     ->Array.join("")
 
   Core.Dom.setInnerHTML(h.playlist, html)
-  player.listItems = Core.Dom.querySelectorAll(Core.Dom.document, ".rp-item")
+  player.listItems = Core.Dom.elQuerySelectorAll(h.playlist, ".rp-item")
 
   player.listItems->Array.forEachWithIndex((item, index) => {
     Core.Dom.addEventListener(item, "click", (_: Core.Dom.element) => {

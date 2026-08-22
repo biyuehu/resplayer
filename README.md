@@ -166,6 +166,7 @@ Every call to `makePlayer` (JS/TS) or `RPlayer.make` (ReScript) returns an insta
 | `hide`             | `hideInstance`         | Hide the entire player (not just the playlist)      |
 | `isHidden`         | `isInstanceHidden`     | Check whether the player is currently hidden        |
 | `destroy`          | `destroyInstance`      | Stop playback, clear timers, and remove the DOM     |
+| `remount`          | `remountInstance`      | Move the player's DOM into a new container, preserving state |
 
 ## Project structure
 

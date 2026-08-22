@@ -14,7 +14,7 @@ type audioItem = {
 type theme =
   | Light
   | Dark
-  | AutoTheme
+  | Auto
 
 type config = {
   container: Core.Dom.element,
@@ -64,16 +64,22 @@ let applyFixed = (container: Core.Dom.element, fixed: option<bool>): unit => {
   }
 }
 
+type mediaQueryList = {matches: bool}
+
+@val external matchMedia: string => mediaQueryList = "window.matchMedia"
+
+let prefersDarkColorScheme = (): bool => matchMedia("(prefers-color-scheme: dark)").matches
+
 let applyTheme = (container: Core.Dom.element, theme: option<theme>): unit => {
   let classList = Core.Dom.classList(container)
   ignore(classList["remove"]("rp-dark"))
   ignore(classList["remove"]("rp-light"))
-  ignore(classList["remove"]("rp-auto"))
 
   switch theme {
   | Some(Dark) => classList["add"]("rp-dark")
   | Some(Light) => classList["add"]("rp-light")
-  | Some(AutoTheme) => classList["add"]("rp-auto")
+  | Some(Auto) =>
+    prefersDarkColorScheme() ? classList["add"]("rp-dark") : classList["add"]("rp-light")
   | None => ()
   }
 }
@@ -155,6 +161,12 @@ let destroy = (instance: playerInstance): unit => {
   Core.Dom.remove(instance.handles.root)
 }
 
+// 将播放器整体（DOM 节点、内部状态、事件绑定）迁移到新的容器下，
+// 不重建实例，播放进度/歌词/播放列表状态都会保留
+let remount = (instance: playerInstance, newContainer: Core.Dom.element): unit => {
+  Core.Dom.appendChild(newContainer, instance.handles.root)
+}
+
 @genType
 type jsAudioItem = {
   name: string,
@@ -190,7 +202,7 @@ let themeFromString = (s: option<string>): option<theme> =>
   switch s {
   | Some("dark") => Some(Dark)
   | Some("light") => Some(Light)
-  | Some("auto") => Some(AutoTheme)
+  | Some("auto") => Some(Auto)
   | _ => None
   }
 
@@ -259,3 +271,5 @@ let hideInstance = hide
 let isInstanceHidden = isHidden
 @genType
 let destroyInstance = destroy
+@genType
+let remountInstance = remount

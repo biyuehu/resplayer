@@ -310,38 +310,6 @@
   color: var(--rp-text-dim);
 }
 
-/* Auto: follow system preference when no explicit .rp-dark/.rp-light class is set */
-@media (prefers-color-scheme: dark) {
-  .rp-player.rp-auto {
-    --rp-text: #eee;
-    --rp-text-dim: #999;
-    --rp-border: #333;
-    --rp-bg: #1c1c22;
-    --rp-bg-soft: #26262e;
-  }
-  .rp-player.rp-auto .rp-controls {
-    background: var(--rp-bg);
-  }
-  .rp-player.rp-auto .rp-bar {
-    background: #3a3a44;
-  }
-  .rp-player.rp-auto .rp-loaded {
-    background: #4a4a56;
-  }
-  .rp-player.rp-auto .rp-item:nth-child(odd) {
-    background: rgba(255, 255, 255, 0.03);
-  }
-  .rp-player.rp-auto .rp-item:nth-child(even) {
-    background: transparent;
-  }
-  .rp-player.rp-auto .rp-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-  }
-  .rp-player.rp-auto .rp-lyrics {
-    color: var(--rp-text-dim);
-  }
-}
-
 /* Hidden state (used by the show/hide API) */
 .rp-player.rp-hidden {
   display: none !important;

@@ -13,6 +13,9 @@ module Dom = {
   @send
   external elQuerySelector: (element, string) => Nullable.t<element> = "querySelector"
 
+  @send
+  external elQuerySelectorAll: (element, string) => array<element> = "querySelectorAll"
+
   @send external addEventListener: (element, string, 'e => unit) => unit = "addEventListener"
 
   @send
@@ -69,6 +72,10 @@ module Dom = {
   @val external documentObj: {..} = "document"
 
   @val external navigatorUserAgent: string = "navigator.userAgent"
+
+  let safePlay = (el: element): unit => {
+    play(el)->Promise.catch(_ => Promise.resolve())->ignore
+  }
 }
 
 type track = {
@@ -286,7 +293,7 @@ let jump = (player: player, index: int): unit => {
 
       Dom.setSrc(player.audio, track.link)
 
-      let _ = Dom.play(player.audio)
+      Dom.safePlay(player.audio)
 
       player.state.lyrics = Utils.parseLyric(track.lyric->Option.getOr(""), track.subLyric)
 
@@ -311,7 +318,7 @@ let jump = (player: player, index: int): unit => {
 
 let play = (player: player): unit => {
   if Dom.getSrc(player.audio) != "" {
-    let _ = Dom.play(player.audio)
+    Dom.safePlay(player.audio)
   }
 }
 

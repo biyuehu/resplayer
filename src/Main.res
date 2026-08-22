@@ -101,7 +101,7 @@ switch Core.Dom.querySelector(Core.Dom.document, "#app") {
       autoplay: Some(true),
       order: Some(Random),
       color: Some("#F7DCFF"),
-      theme: Some(AutoTheme),
+      theme: Some(Auto),
       audio: sampleTracks->Array.map(toAudioItem),
       titleChange: Some(true),
       showList: Some(false),
