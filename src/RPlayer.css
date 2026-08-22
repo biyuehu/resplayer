@@ -247,23 +247,29 @@
   overflow: visible; /* allow the playlist to expand upward above the bar */
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
 }
+
 .rp-player.rp-fixed .rp-header {
-  height: 3.2em;
+  height: 3.3em;
 }
+
 .rp-player.rp-fixed .rp-cover {
-  width: 3.2em;
-  height: 3.2em;
+  width: 3.3em;
+  height: 3.3em;
 }
+
 .rp-player.rp-fixed .rp-time {
   width: 3.2em;
   height: 3.2em;
 }
+
 .rp-player.rp-fixed .rp-controls {
   left: 3.2em;
 }
+
 .rp-player.rp-fixed .rp-info {
-  margin: 0.4em 6.5em 0.4em 4em;
+  margin: 0.3em 6.5em 0.4em 4em;
 }
+
 .rp-player.rp-fixed .rp-playlist {
   position: absolute;
   left: 0;
@@ -273,6 +279,7 @@
   border-top: 1px solid var(--rp-border);
   border-bottom: none;
 }
+
 /* Dark mode */
 .rp-player.rp-dark {
   --rp-text: #eee;
