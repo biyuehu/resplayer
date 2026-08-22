@@ -1,6 +1,6 @@
 {
   "name": "resplayer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A minimal, declarative music player written in ReScript — with lyrics scrolling, playlist, and theming support.",
   "type": "module",
   "license": "GPL-3.0-only",
@@ -11,8 +11,8 @@
     "lyrics",
     "player"
   ],
-  "main": "src/RPlayer.res.mjs",
-  "types": "src/RPlayer.res.mts",
+  "main": "src/RPlayer.res.js",
+  "types": "src/RPlayer.res.ts",
   "files": [
     "src",
     "README.md",
